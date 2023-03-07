@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--构造方法创建bean-->
+    <bean id="userService" name="bbb ccc,ddd;eee" class="service.impl.UserServiceImpl"/>
+    <!--静态工厂创建bean-->
+    <bean id="userService2" class="factory.StaticFactoryBean" factory-method="getInstance"/>
+    <!--实例工厂-->
+    <bean id="factoryBean" class="factory.FactoryBean"/>
+    <bean id="userService3" factory-bean="factoryBean" factory-method="getInstance"/>
+    <!--给userService 7行的bean取了个别名叫aaa-->
+    <!--取别名 还有其余取别名的方式 详见：第七行-->
+    <alias name="userService" alias="aaa"/>
+
+
+
+    <!--根据参数的顺序-->
+    <!--<bean id="user" class="pojo.User">
+        <constructor-arg index="0" value="庄浩松"/>
+        <constructor-arg index="1" value="22"/>
+    </bean>-->
+    <!--根据参数的类型-->
+   <!-- <bean id="user" class="pojo.User">
+        <constructor-arg type="java.lang.String" value="庄浩松"/>
+        <constructor-arg type="int" value="22"/>
+    </bean>-->
+    <!--根据参数名进行创建-->
+    <!--<bean id="user" class="pojo.User">
+        <constructor-arg name="name" value="庄浩松"/>
+        <constructor-arg name="age" value="22"/>
+    </bean>-->
+
+    <!--非单例-->
+    <!--<bean id="user" class="pojo.User" scope="prototype">-->
+    <bean id="user" class="pojo.User">
+        <!--必须有set方法-->
+        <!--这里的name属性 并不是找的属性 而是找的 set方法后面的那一个字符串首字母变小写-->
+        <!--<property name="name1" value="zhuang"/>-->
+        <property name="name" value="zhuang"/>
+        <property name="age" value="22"/>
+
+        <property name="address" ref="address"/>
+        <property name="books" >
+            <array>
+                <value>金瓶梅</value>
+                <value>雷雨</value>
+                <value>水浒传</value>
+                <value>西游</value>
+            </array>
+        </property>
+        <property name="hobbys">
+            <list>
+                <value>吃喝嫖赌抽</value>
+                <value>坑蒙骗</value>
+            </list>
+        </property>
+        <property name="cards">
+            <map>
+                <entry key="aaa" value="AAAA"/>
+                <entry key="bbb" value="BBBB"/>
+                <entry key="ccc" value="CCCC"/>
+            </map>
+        </property>
+        <property name="wife" ><null/></property>
+        <property name="properties">
+            <props>
+                <prop key="username">root</prop>
+                <prop key="driverClass">jdbc.xxxx....</prop>
+                <prop key="pwd">123456</prop>
+            </props>
+        </property>
+        <property name="games">
+            <set>
+                <value>lol</value>
+                <value>coc</value>
+                <value>coc</value>
+                <value>...</value>
+            </set>
+        </property>
+    </bean>
+
+    <bean id="address" class="pojo.Address">
+        <property name="addressName" value="北京市朝阳区xxxx会所"/>
+    </bean>
+
+    <!--p命名空间 通过set方式注入-->
+    <!--<bean id="student" class="pojo.Student" p:name="庄浩松2" p:age="22"/>-->
+    <!--c命名空间通过 constructor 进行注入-->
+    <bean id="student" class="pojo.Student" c:name="庄浩松" c:age="999" scope="singleton"/>
+    <bean id="teacher" class="pojo.Teacher" lazy-init="true"/>
+</beans>
